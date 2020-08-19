@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 
 
 public class PlayerController : MonoBehaviour
@@ -10,10 +11,15 @@ public class PlayerController : MonoBehaviour
     public float speed = 200;
     public Rigidbody rb;
     private int score = 0;
+    public Text scoreText;
+    public Text healthText;
+    public Text victoryText;
+    public Text defeatText;
+    public Image vicdefBG;
 
     // Check health
     void Update()
-    {
+    {  
         if (health == 0)
         {
             Debug.Log ("Game Over!");
@@ -21,6 +27,9 @@ public class PlayerController : MonoBehaviour
             score = 0;
             health = 5;
         }
+
+        SetScoreText();
+        SetHealthText();
     }    
 
     // Move with wasd
@@ -43,19 +52,40 @@ public class PlayerController : MonoBehaviour
         if (other.tag == "Pickup")
         {
             score++;
-            Debug.Log ("Score: " + score);
             other.gameObject.SetActive(false);
         }
 
         if (other.tag == "Trap")
         {
             health--;
-            Debug.Log ("Health: " + health);
         }
 
         if (other.tag == "Goal")
         {
-            Debug.Log ("You win!");
+            vicdefBG.color = Color.green;
+            victoryText.color = Color.black;
+            victoryText.text = "You Win!";
+            vicdefBG.gameObject.SetActive(true);
+            //Debug.Log ("You win!");
         }
+    }
+
+    //Change score dynamically
+    void SetScoreText()
+    {
+        scoreText.text = "Score: " + score.ToString();
+    }
+
+    void SetHealthText()
+    {
+        healthText.text = "Health: " + health.ToString();
+    }
+
+    void SetBannerGameOver()
+    {
+        vicdefBG.color = Color.green;
+        victoryText.color = Color.black;
+        victoryText.text = "You Win!";
+        vicdefBG.gameObject.SetActive(true);
     }
 }
