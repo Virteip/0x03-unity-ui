@@ -19,18 +19,24 @@ public class PlayerController : MonoBehaviour
 
     // Check health
     void Update()
-    {  
+    {
         if (health == 0)
         {
-            Debug.Log ("Game Over!");
-            SceneManager.LoadScene("Maze", LoadSceneMode.Single);
-            score = 0;
-            health = 5;
+            vicdefBG.color = Color.red;
+            victoryText.color = Color.white;
+            victoryText.text = "Game Over!";
+            vicdefBG.gameObject.SetActive(true);
+            StartCoroutine(LoadScene(3));
+        }
+
+        if (Input.GetKey("escape"))
+        {
+            SceneManager.LoadScene("Menu", LoadSceneMode.Single);
         }
 
         SetScoreText();
         SetHealthText();
-    }    
+    }
 
     // Move with wasd
     void FixedUpdate()
@@ -66,7 +72,6 @@ public class PlayerController : MonoBehaviour
             victoryText.color = Color.black;
             victoryText.text = "You Win!";
             vicdefBG.gameObject.SetActive(true);
-            //Debug.Log ("You win!");
         }
     }
 
@@ -87,5 +92,13 @@ public class PlayerController : MonoBehaviour
         victoryText.color = Color.black;
         victoryText.text = "You Win!";
         vicdefBG.gameObject.SetActive(true);
+    }
+
+    IEnumerator LoadScene(float seconds)
+    {
+        yield return new  WaitForSeconds(seconds);
+        SceneManager.LoadScene("Maze", LoadSceneMode.Single);
+        score = 0;
+        health = 5;
     }
 }
